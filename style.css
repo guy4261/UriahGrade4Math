@@ -5,3 +5,5 @@
 
 /* Hebrew copy follows RTL; math expressions and keypads keep their familiar order. */
 :root{font-family:'Heebo',sans-serif}h1,.card-content strong,.legend-value strong{font-family:'Heebo',sans-serif}h1,.card-content strong{letter-spacing:0}.eyebrow,.tag{letter-spacing:0}.game-card{text-align:start}.canvas-tools{left:auto;inset-inline-start:12px}.formula,#keypad{direction:ltr}.formula input{direction:ltr}.legend-value{justify-content:flex-end}.card-link b{direction:ltr}footer span{margin-left:0;margin-inline-start:10px}.game-heading h1{line-height:1.3}.game-heading p{max-width:650px}#feedback{overflow-wrap:anywhere}
+
+.game-card{text-decoration:none}.back{display:inline-block;text-decoration:none}

@@ -152,10 +152,6 @@ function newRound() {
   fields.forEach(f => f.value = ''); $('keypad').hidden = true; clearFeedback();
   resize(); arrange();
 }
-$('start').onclick = () => { $('home').hidden = true; $('game').hidden = false; newRound(); };
-function home() { stopAnimation(); $('game').hidden = true; $('home').hidden = false; }
-$('back').onclick = home;
-$('brand').onclick = event => { event.preventDefault(); home(); };
 $('new-round').onclick = newRound;
 $('reset').onclick = () => arrange(true);
 $('order').onclick = () => arrange(true);
@@ -190,3 +186,5 @@ canvas.onpointermove = event => {
 function endDrag() { drag = null; canvas.classList.remove('dragging'); draw(); }
 canvas.onpointerup = endDrag; canvas.onpointercancel = endDrag; canvas.onlostpointercapture = endDrag;
 new ResizeObserver(resize).observe(canvas);
+
+newRound();

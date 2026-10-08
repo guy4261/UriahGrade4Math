@@ -7,23 +7,17 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header><a href="#" id="brand">◈ <span>מעבדת החשבון</span></a><span class="header-note">רעיונות גדולים. ריבועים קטנים.</span></header>
+  <header><a href="./" id="brand">◈ <span>מעבדת החשבון</span></a><span class="header-note">רעיונות גדולים. ריבועים קטנים.</span></header>
   <main>
     <section id="home">
       <div class="eyebrow">בואו נשחק עם מספרים</div>
       <h1>קצת משחק.<br>המון תגליות.</h1>
       <p class="intro">מזיזים, מגלים דפוסים ולומדים חשבון בדרך שלכם.</p>
-      <button class="game-card" id="start"><span class="card-art" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="card-content"><span class="tag">כפל וחיבור</span><strong>חוקרי הריבועים</strong><span>סדרו את הריבועים וגלו את הערך הכולל שלהם.</span><span class="card-link">בואו נגלה <b>↖</b></span></span></button>
+      <a class="game-card" id="start" href="squares/"><span class="card-art" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="card-content"><span class="tag">כפל וחיבור</span><strong>חוקרי הריבועים</strong><span>סדרו את הריבועים וגלו את הערך הכולל שלהם.</span><span class="card-link">בואו נגלה <b>↖</b></span></span></a>
       <p class="small-note">משחק אחד, אינספור דרכים לפתרון.</p>
     </section>
-    <section id="game" hidden>
-      <button class="back" id="back">→ לכל המשחקים</button>
-      <div class="game-heading"><div><div class="eyebrow">חוקרי הריבועים</div><h1>מה הערך הכולל?</h1><p>גררו את הריבועים לקבוצות, ואז כתבו תרגיל.</p></div><button class="secondary" id="new-round">סיבוב חדש ↻</button></div>
-      <div class="workspace"><div class="board-panel"><div class="board-heading"><span>מרחב הגילוי שלכם</span><span id="count" hidden></span></div><div class="canvas-wrap"><div class="canvas-tools"><button id="explode" title="פזרו את הריבועים">🤡 פיזור</button><button id="order" title="סדרו את הריבועים במלבן">💂 סידור</button></div><canvas id="board" aria-label="ריבועים שאפשר לגרור. השתמשו בעכבר או במגע כדי לסדר אותם בקבוצות."></canvas></div><div class="board-footer"><span>✥ גררו ריבוע כדי להזיז אותו</span><button id="reset">סידור מחדש</button></div></div>
-      <aside><div class="legend"><div class="eyebrow">הערך של ריבוע אחד</div><div class="legend-value" dir="ltr"><span class="sample"></span><span>=</span><strong id="value"></strong></div><p>לכל הריבועים יש אותו ערך.</p></div><form id="answer-form"><label id="formula-label">בואו נחשב הכול</label><p>הרכיבו תרגיל. כפל וחילוק קודמים לחיבור ולחיסור.</p><div class="formula" dir="ltr" role="group" aria-labelledby="formula-label"><input class="number-field" id="number-1" aria-label="המספר הראשון" inputmode="numeric" autocomplete="off" placeholder="0"><input class="operator-field" id="operator-1" aria-label="פעולת החשבון הראשונה" readonly placeholder="+"><input class="number-field" id="number-2" aria-label="המספר השני" inputmode="numeric" autocomplete="off" placeholder="0"><input class="operator-field" id="operator-2" aria-label="פעולת החשבון השנייה" readonly placeholder="+"><input class="number-field" id="number-3" aria-label="המספר השלישי" inputmode="numeric" autocomplete="off" placeholder="0"></div><div id="keypad" hidden aria-label="לוח מקשים לחשבון"></div><span id="input-help">לחצו על Enter כדי לבדוק את התרגיל.</span><button class="primary" type="submit">בדיקת התשובה ←</button><div id="feedback" role="status" aria-live="polite"></div></form><div class="hint"><span>✦</span><p>יש יותר מדרך אחת למצוא את הערך הכולל. נסו ליצור קבוצות שוות!</p></div></aside></div>
-    </section>
+
   </main>
   <footer>לכל מי שאוהבים לגלות <span>✦</span></footer>
-  <script src="app.js"></script>
 </body>
 </html>
