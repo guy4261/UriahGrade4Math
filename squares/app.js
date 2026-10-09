@@ -13,7 +13,7 @@ function calculate() {
     if (!/^\d+$/.test(v) || !Number.isSafeInteger(Number(v))) throw new Error('הקלידו מספרים שלמים קטנים מספיק לחישוב.');
     return Number(v);
   });
-  const ops = [values[1], values[3]];
+  const ops = [values[1], values[3]].map(op => op === 'x' ? '*' : op);
   if (ops.some(op => !['+', '-', '*', '/'].includes(op))) throw new Error('בחרו פעולת חשבון בכל אחד משני הרווחים.');
   const terms = [numbers[0]], additions = [];
   for (let i = 0; i < 2; i++) {
@@ -33,7 +33,7 @@ function showKeypad(field) {
   fields.forEach(f => f.classList.toggle('active', f === field));
   const operator = field.classList.contains('operator-field');
   const pad = $('keypad'); pad.hidden = false; pad.classList.toggle('operators', operator); pad.replaceChildren();
-  const keys = operator ? ['+', '-', '*', '/'] : ['1','2','3','4','5','6','7','8','9','ניקוי','0','⌫'];
+  const keys = operator ? ['+', '-', 'x', '/'] : ['1','2','3','4','5','6','7','8','9','ניקוי','0','⌫'];
   for (const key of keys) {
     const button = document.createElement('button'); button.type = 'button'; button.textContent = key;
     if (key === '⌫') button.setAttribute('aria-label', 'מחיקת הספרה האחרונה');
@@ -54,7 +54,7 @@ fields.forEach(field => {
   field.oninput = () => { field.value = field.value.replace(/[^0-9]/g,''); clearFeedback(); };
   field.onkeydown = event => {
     if (event.key === 'Enter') { event.preventDefault(); $('answer-form').requestSubmit(); }
-    if (field.classList.contains('operator-field') && ['+','-','*','/'].includes(event.key)) { event.preventDefault(); field.value = event.key; clearFeedback(); }
+    if (field.classList.contains('operator-field') && ['+','-','x','X','*','/'].includes(event.key)) { event.preventDefault(); field.value = ['*', 'X'].includes(event.key) ? 'x' : event.key; clearFeedback(); }
   };
 });
 document.addEventListener('pointerdown', event => {
@@ -164,7 +164,7 @@ $('answer-form').onsubmit = event => {
     const won = Math.abs(result - squares.length * squareValue) < 1e-9;
     if(won) { $('count').hidden=false; $('count').textContent=`${squares.length} ריבועים`; }
     feedback.className = won ? 'success' : 'error';
-    feedback.textContent = won ? `כל הכבוד! פתרתם נכון! יש ${squares.length} ריבועים. \u2066${squares.length} × ${squareValue} = ${result}\u2069. יופי של גילוי! ✦` : `תוצאת התרגיל שלכם היא \u2066${result}\u2069. ספרו את הריבועים והיעזרו בערך של כל אחד מהם. נסו שוב!`;
+    feedback.textContent = won ? `כל הכבוד! פתרתם נכון! יש ${squares.length} ריבועים. \u2066${squares.length} x ${squareValue} = ${result}\u2069. יופי של גילוי! ✦` : `תוצאת התרגיל שלכם היא \u2066${result}\u2069. ספרו את הריבועים והיעזרו בערך של כל אחד מהם. נסו שוב!`;
   } catch (error) { feedback.className = 'error'; feedback.textContent = error.message; }
 };
 function point(event) { const rect = canvas.getBoundingClientRect(); return {x:event.clientX - rect.left,y:event.clientY - rect.top}; }
