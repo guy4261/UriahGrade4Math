@@ -54,7 +54,7 @@ function createProblem() {
     result,
     operator,
     remainder,
-    missing: omissions[integer(0, omissions.length - 1)],
+    missing: remainder > 0 ? 2 : omissions[integer(0, omissions.length - 1)],
   };
 }
 
@@ -78,11 +78,14 @@ function renderProblems(count) {
       if (position === problem.missing) {
         const input = document.createElement("input");
         input.type = "text";
-        input.inputMode = "numeric";
+        input.inputMode = position === 2 ? "text" : "numeric";
         input.autocomplete = "off";
         input.setAttribute("aria-label", `המספר החסר בתרגיל ${index + 1}`);
         input.oninput = () => {
-          input.value = input.value.replace(/[^0-9]/g, "");
+          input.value = input.value.replace(
+            position === 2 ? /[^0-9()]/g : /[^0-9]/g,
+            "",
+          );
           card.classList.remove("correct", "incorrect");
           note.textContent = "";
           byId("batch-feedback").textContent = "";
@@ -95,13 +98,6 @@ function renderProblems(count) {
         equation.append(number);
       }
     });
-    if (problem.remainder) {
-      const remainder = document.createElement("span");
-      remainder.dir = "rtl";
-      remainder.className = "problem-note";
-      remainder.textContent = `שארית ${problem.remainder}`;
-      equation.append(remainder);
-    }
     const note = document.createElement("span");
     note.className = "problem-note";
     note.setAttribute("aria-live", "polite");
@@ -122,10 +118,7 @@ byId("answers-form").onsubmit = (event) => {
   event.preventDefault();
   let correct = 0;
   problems.forEach((problem) => {
-    const answer = [problem.a, problem.b, problem.result][problem.missing];
-    const won =
-      /^\d+$/.test(problem.input.value) &&
-      Number(problem.input.value) === answer;
+    const won = isCorrectAnswer(problem, problem.input.value);
     problem.card.classList.toggle("correct", won);
     problem.card.classList.toggle("incorrect", !won);
     problem.note.textContent = won
@@ -139,9 +132,27 @@ byId("answers-form").onsubmit = (event) => {
     `תשובות נכונות: ${correct} מתוך ${problems.length}`;
 };
 
+function isCorrectAnswer(problem, text) {
+  if (problem.missing !== 2) {
+    return (
+      /^\d+$/.test(text) &&
+      Number(text) === [problem.a, problem.b][problem.missing]
+    );
+  }
+  const match = /^(\d+)(?:\((\d+)\))?$/.exec(text);
+  if (!match || Number(match[1]) !== problem.result) return false;
+  if (problem.remainder > 0)
+    return match[2] !== undefined && Number(match[2]) === problem.remainder;
+  return match[2] === undefined || Number(match[2]) === 0;
+}
+
 function printableEquation(problem, solution = false) {
   const values = [problem.a, problem.b, problem.result].map((value, index) =>
-    !solution && index === problem.missing ? "______" : value,
+    !solution && index === problem.missing
+      ? "______"
+      : index === 2 && problem.remainder > 0
+        ? `${value}(${problem.remainder})`
+        : value,
   );
   return `${values[0]} ${problem.operator} ${values[1]} = ${values[2]}`;
 }
@@ -160,7 +171,7 @@ async function exercisePdf(count) {
       context.fillText(
         solutions
           ? "הפתרונות לכל התרגילים"
-          : "בחילוק עם שארית, השארית נתונה. כתבו רק את המספר החסר.",
+          : "בחילוק עם שארית כתבו בסוגריים, למשל: 4(2).",
         1150,
         210,
       );
@@ -170,8 +181,6 @@ async function exercisePdf(count) {
         context.textAlign = "right";
         context.font = "24px Heebo, Arial, sans-serif";
         context.fillText(`תרגיל ${start + index + 1}`, 1120, y);
-        if (problem.remainder)
-          context.fillText(`שארית ${problem.remainder}`, 850, y);
         context.direction = "ltr";
         context.textAlign = "left";
         context.font = "30px Heebo, Arial, sans-serif";

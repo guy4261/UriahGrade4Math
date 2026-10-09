@@ -875,3 +875,10 @@ dialog .answer-actions {
     width: 75px;
   }
 }
+
+#problems {
+  grid-template-columns: 1fr;
+}
+.equation input {
+  width: 110px;
+}
