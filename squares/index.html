@@ -20,7 +20,10 @@
             <h1>כמה פריטים יש במחסן?</h1>
             <p id="question"></p>
           </div>
-          <button class="secondary" id="new-round">סיבוב חדש ↻</button>
+          <div class="round-controls">
+            <span id="daily-score" role="status" aria-live="polite"></span
+            ><button class="secondary" id="new-round">סיבוב חדש ↻</button>
+          </div>
         </div>
         <div class="workspace">
           <div class="board-panel">
@@ -40,8 +43,7 @@
               ></canvas>
             </div>
             <div class="board-footer">
-              <span id="drag-help">✥ גררו חפץ כדי להזיז אותו</span
-              ><button id="reset">סידור מחדש</button>
+              <span id="drag-help">✥ גררו חפץ כדי להזיז אותו</span>
             </div>
           </div>
           <aside>
@@ -99,8 +101,13 @@
                 />
               </div>
               <div id="keypad" hidden aria-label="לוח מקשים לחשבון"></div>
-              <span id="input-help">לחצו על Enter כדי לבדוק את התרגיל.</span
-              ><button class="primary" type="submit">בדיקת התשובה ←</button>
+              <span id="input-help">לחצו על Enter כדי לבדוק את התרגיל.</span>
+              <div class="answer-actions">
+                <button class="primary" type="submit">בדיקת התשובה ←</button
+                ><button class="secondary" id="next-round" type="button" hidden>
+                  סיבוב חדש ↻
+                </button>
+              </div>
               <div id="feedback" role="status" aria-live="polite"></div>
             </form>
             <div class="hint">

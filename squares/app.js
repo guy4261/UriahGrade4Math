@@ -14,10 +14,53 @@ const randomDigit = () => 1 + Math.floor(Math.random() * 9);
 let animation = 0,
   activeField = null;
 const fields = [...document.querySelectorAll(".formula input")];
+// Store a separate tally for each local calendar date, matching the child's browser.
+const SCORE_STORAGE_KEY = "uriah-math-daily-correct";
+let scoreDate = "";
+let dailyCorrect = 0;
+let roundCounted = false;
+
+function todayKey() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+}
+
+function updateDailyScore(increment = false) {
+  const date = todayKey();
+  if (scoreDate !== date) {
+    scoreDate = date;
+    dailyCorrect = 0;
+  }
+  try {
+    const saved = JSON.parse(localStorage.getItem(SCORE_STORAGE_KEY) || "null");
+    if (
+      saved?.date === date &&
+      Number.isSafeInteger(saved.count) &&
+      saved.count >= 0
+    ) {
+      dailyCorrect = saved.count;
+    }
+  } catch {
+    // The in-memory counter still works when storage is unavailable.
+  }
+  if (increment) dailyCorrect += 1;
+  try {
+    localStorage.setItem(
+      SCORE_STORAGE_KEY,
+      JSON.stringify({ date, count: dailyCorrect }),
+    );
+  } catch {
+    // Saving progress is optional; the game remains playable.
+  }
+  $("daily-score").textContent = `תשובות נכונות היום: ${dailyCorrect}`;
+}
+
+// Refresh after returning to the tab, and across midnight while it stays open.
+window.addEventListener("focus", () => updateDailyScore());
+setInterval(() => updateDailyScore(), 60_000);
+
 function calculate() {
-  const values = fields.map((f) => f.value);
-  if (values.some((v) => !v))
-    throw new Error("מלאו את כל חמשת השדות כדי להשלים את התרגיל.");
+  const values = fields.map((field) => field.value || field.placeholder);
   const numbers = [values[0], values[2], values[4]].map((v) => {
     if (!/^\d+$/.test(v) || !Number.isSafeInteger(Number(v)))
       throw new Error("הקלידו מספרים שלמים קטנים מספיק לחישוב.");
@@ -57,6 +100,7 @@ function stopAnimation() {
 function clearFeedback() {
   $("feedback").textContent = "";
   $("feedback").className = "";
+  $("next-round").hidden = true;
 }
 function showKeypad(field) {
   activeField = field;
@@ -289,6 +333,8 @@ function resize() {
 }
 function newRound() {
   stopAnimation();
+  roundCounted = false;
+  updateDailyScore();
   squares = Array.from({ length: randomDigit() * randomDigit() }, () => ({
     x: 0,
     y: 0,
@@ -320,16 +366,23 @@ function newRound() {
   arrange();
 }
 $("new-round").onclick = newRound;
-$("reset").onclick = () => arrange(true);
+$("next-round").onclick = newRound;
 $("order").onclick = () => arrange(true);
 $("explode").onclick = explode;
 $("answer-form").onsubmit = (event) => {
   event.preventDefault();
   const feedback = $("feedback");
+  $("next-round").hidden = true;
+  updateDailyScore();
   try {
     const result = calculate();
     const won = Math.abs(result - squares.length * squareValue) < 1e-9;
     if (won) {
+      $("next-round").hidden = false;
+      if (!roundCounted) {
+        updateDailyScore(true);
+        roundCounted = true;
+      }
       $("count").hidden = false;
       $("count").textContent =
         `${squares.length} ${noun(theme.object, squares.length)}`;
