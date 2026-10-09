@@ -589,3 +589,28 @@ footer span {
   padding: 12px 8px;
   font-size: 12px;
 }
+
+dialog {
+  border: 1px solid #cdd8c7;
+  border-radius: 18px;
+  padding: 28px;
+  width: 420px;
+  max-width: calc(100% - 32px);
+  color: #213d36;
+  background: #f7f8f2;
+}
+dialog::backdrop {
+  background: #213d3677;
+}
+dialog h2 {
+  margin-top: 0;
+}
+dialog form {
+  margin: 0;
+}
+dialog input {
+  margin: 14px 0;
+}
+dialog .answer-actions {
+  margin-top: 12px;
+}

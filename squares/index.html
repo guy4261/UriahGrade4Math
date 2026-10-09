@@ -21,7 +21,9 @@
             <p id="question"></p>
           </div>
           <div class="round-controls">
-            <span id="daily-score" role="status" aria-live="polite"></span
+            <button class="secondary" id="open-pdf" type="button">
+              יצירת PDF ↓</button
+            ><span id="daily-score" role="status" aria-live="polite"></span
             ><button class="secondary" id="new-round">סיבוב חדש ↻</button>
           </div>
         </div>
@@ -121,7 +123,31 @@
       </section>
     </main>
     <footer>לכל מי שאוהבים לגלות <span>✦</span></footer>
+    <dialog id="pdf-dialog" aria-labelledby="pdf-title">
+      <form id="pdf-form">
+        <h2 id="pdf-title">דף תרגילים להדפסה</h2>
+        <p>תרגילים ללא תשובות, ובסוף דפי פתרונות.</p>
+        <label for="exercise-count">מספר התרגילים</label>
+        <input
+          id="exercise-count"
+          type="number"
+          min="1"
+          step="1"
+          value="6"
+          required
+          inputmode="numeric"
+        />
+        <div class="answer-actions">
+          <button class="primary" id="generate-pdf" type="submit">
+            יצירה והורדה
+          </button>
+          <button class="secondary" id="close-pdf" type="button">ביטול</button>
+        </div>
+        <p id="pdf-status" role="status" aria-live="polite"></p>
+      </form>
+    </dialog>
     <script src="themes.js"></script>
+    <script src="worksheet.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
