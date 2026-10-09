@@ -614,3 +614,24 @@ dialog input {
 dialog .answer-actions {
   margin-top: 12px;
 }
+
+#prompt-dialog {
+  width: 760px;
+}
+#prompt-text {
+  box-sizing: border-box;
+  width: 100%;
+  height: 55vh;
+  resize: vertical;
+  padding: 16px;
+  border: 1px solid #cbd7c1;
+  border-radius: 10px;
+  background: white;
+  color: #213d36;
+  font: 14px/1.6 monospace;
+  text-align: left;
+  margin-bottom: 16px;
+}
+#prompt-dialog .answer-actions {
+  flex-wrap: wrap;
+}

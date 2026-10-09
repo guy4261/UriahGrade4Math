@@ -21,6 +21,9 @@
             <p id="question"></p>
           </div>
           <div class="round-controls">
+            <button class="secondary" id="open-prompt" type="button">
+              פרומפט
+            </button>
             <button class="secondary" id="open-pdf" type="button">
               יצירת PDF ↓</button
             ><span id="daily-score" role="status" aria-live="polite"></span
@@ -146,6 +149,24 @@
         <p id="pdf-status" role="status" aria-live="polite"></p>
       </form>
     </dialog>
+    <dialog id="prompt-dialog" aria-labelledby="prompt-title">
+      <h2 id="prompt-title">פרומפט ליצירת האפליקציה</h2>
+      <textarea
+        id="prompt-text"
+        readonly
+        dir="ltr"
+        aria-label="App creation prompt"
+        spellcheck="false"
+      ></textarea>
+      <div class="answer-actions" dir="ltr">
+        <button class="secondary" id="close-prompt" type="button">OK</button>
+        <button class="primary" id="copy-prompt" type="button" disabled>
+          Copy to Clipboard
+        </button>
+      </div>
+      <p id="prompt-status" role="status" aria-live="polite"></p>
+    </dialog>
+    <script src="prompt.js"></script>
     <script src="themes.js"></script>
     <script src="worksheet.js"></script>
     <script src="app.js"></script>
