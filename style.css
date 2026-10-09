@@ -795,7 +795,9 @@ dialog .answer-actions {
 
 @media (max-width: 800px) {
   .compact-game:has(#keypad:not([hidden])) canvas {
-    height: clamp(80px, 12dvh, 110px);
+    height: 160px;
   }
 }
 
+
+@media(max-width:800px){.compact-game #keypad:not(.operators){grid-template-columns:repeat(6,minmax(0,1fr))}.compact-game #keypad button{padding:5px 0;font-size:16px}}
