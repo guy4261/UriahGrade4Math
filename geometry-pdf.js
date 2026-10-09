@@ -76,41 +76,52 @@ async function geometryWorksheet(count) {
     geometryPdfStatus.textContent = `נוצרו ${images.length} דפים…`;
     await new Promise((resolve) => setTimeout(resolve, 0));
   };
-  for (let start = 0; start < count; start += 2) {
+  // Four cards in a two-column grid: keep degree labels and all choices legible.
+  const problemsPerPage = 4;
+  for (let start = 0; start < count; start += problemsPerPage) {
     const { canvas, context } = worksheetPage(
       `${titles[document.body.dataset.geometry]} - דף תרגילים`,
       images.length + 1,
     );
-    for (let offset = 0; offset < 2 && start + offset < count; offset++) {
-      const exercise = exercises[start + offset],
-        top = 230 + offset * 710;
+    for (
+      let offset = 0;
+      offset < problemsPerPage && start + offset < count;
+      offset++
+    ) {
+      const exercise = exercises[start + offset];
+      // Read down each row from the right, matching Hebrew reading order.
+      const column = offset % 2;
+      const row = Math.floor(offset / 2);
+      const left = column === 0 ? 630 : 90;
+      const right = left + 500;
+      const top = 220 + row * 710;
       context.direction = "rtl";
       context.textAlign = "right";
-      context.font = "bold 28px Heebo, Arial";
-      context.fillText(`תרגיל ${start + offset + 1}`, 1130, top);
-      context.font = "23px Heebo, Arial";
+      context.font = "bold 27px Heebo, Arial";
+      context.fillText(`תרגיל ${start + offset + 1}`, right - 18, top + 30);
+      context.font = "21px Heebo, Arial";
       context.fillText(
         exercise.mode === "sides"
           ? "זהו לפי אורכי הצלעות."
           : exercise.mode === "angles"
             ? "זהו לפי הזוויות."
             : "בחרו את השם המדויק ביותר.",
-        1130,
-        top + 40,
+        right - 18,
+        top + 65,
       );
-      context.drawImage(await shapeImage(exercise), 360, top + 55, 520, 395);
-      context.font = "22px Heebo, Arial";
+      context.drawImage(
+        await shapeImage(exercise),
+        left + 15,
+        top + 75,
+        470,
+        357,
+      );
+      context.font = "21px Heebo, Arial";
       exercise.choices.forEach((choice, i) => {
-        const column = i % 2,
-          row = Math.floor(i / 2);
-        context.fillText(
-          `□ ${choice.label}`,
-          1130 - column * 540,
-          top + 490 + row * 43,
-        );
+        context.fillText(`□ ${choice.label}`, right - 18, top + 455 + i * 34);
       });
       context.strokeStyle = "#dbe3d6";
-      context.strokeRect(90, top - 35, 1060, 685);
+      context.strokeRect(left, top - 5, 520, 685);
     }
     await addPage(canvas);
   }
