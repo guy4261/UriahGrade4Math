@@ -11,7 +11,10 @@
       <a class="back" href="../">→ לכל המשחקים</a>
       <div class="game-heading">
         <h1>משולשים</h1>
-        <button class="secondary" id="next-shape">ציור חדש ↻</button>
+        <div class="round-controls">
+          <button class="secondary" id="open-pdf">יצירת PDF ↓</button
+          ><button class="secondary" id="next-shape">ציור חדש ↻</button>
+        </div>
       </div>
       <p id="geometry-instruction"></p>
       <div class="geometry-workspace">
@@ -26,10 +29,39 @@
         <div>
           <h2>מה מצויר?</h2>
           <div id="shape-options" class="shape-options"></div>
-          <p id="shape-feedback" role="status" aria-live="polite"></p>
+          <button
+            id="shape-feedback"
+            type="button"
+            disabled
+            aria-live="polite"
+          ></button>
         </div>
       </div>
     </main>
+    <dialog id="geometry-pdf-dialog">
+      <form id="geometry-pdf-form">
+        <h2>דף תרגילים להדפסה</h2>
+        <label for="geometry-pdf-count">מספר התרגילים</label
+        ><input
+          id="geometry-pdf-count"
+          type="number"
+          min="1"
+          step="1"
+          value="6"
+          required
+        />
+        <div class="answer-actions">
+          <button class="primary" id="geometry-pdf-generate" type="submit">
+            יצירה והורדה</button
+          ><button class="secondary" id="geometry-pdf-close" type="button">
+            ביטול
+          </button>
+        </div>
+        <p id="geometry-pdf-status" role="status"></p>
+      </form>
+    </dialog>
+    <script src="../exercises/pdf.js"></script>
     <script src="../geometry.js"></script>
+    <script src="../geometry-pdf.js"></script>
   </body>
 </html>

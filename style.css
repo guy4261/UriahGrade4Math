@@ -942,3 +942,25 @@ dialog .answer-actions {
     margin: 8px 0;
   }
 }
+
+#shape {
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+#shape:active {
+  cursor: grabbing;
+}
+#shape-feedback {
+  border: 0;
+  background: none;
+  color: #315c45;
+  font: inherit;
+  text-align: start;
+  padding: 12px 0;
+}
+#shape-feedback:enabled {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 700;
+}

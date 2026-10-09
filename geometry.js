@@ -116,8 +116,9 @@ const angles = [
   { label: "זווית קהה - מעל 90 מעלות", degrees: 125 },
   { label: "זווית שטוחה - 180 מעלות", degrees: 180 },
 ];
-const svg = document.getElementById("shape");
+let svg = document.getElementById("shape");
 const namespace = "http://www.w3.org/2000/svg";
+let currentShape = null;
 let previousKey = "",
   solved = false;
 function element(tag, attributes, parent = svg) {
@@ -143,7 +144,8 @@ function drawPolygon(preset, rotation, mode) {
     "stroke-width": 4,
     "stroke-linejoin": "round",
   });
-  if (mode === "angles") {
+  if (mode === "angles" || mode === "polygon") {
+    const degrees = roundedAngles(preset.points);
     points.forEach((vertex, i) => {
       const before = points[(i + points.length - 1) % points.length],
         after = points[(i + 1) % points.length];
@@ -156,6 +158,12 @@ function drawPolygon(preset, rotation, mode) {
         vertex[0] + 25 * Math.cos(first + (delta * j) / 20),
         vertex[1] + 25 * Math.sin(first + (delta * j) / 20),
       ]);
+      const middle = first + delta / 2;
+      degreeLabel(
+        vertex[0] + 52 * Math.cos(middle),
+        vertex[1] + 52 * Math.sin(middle),
+        degrees[i],
+      );
       element("polyline", {
         points: arcPoints.map((p) => p.join(",")).join(" "),
         fill: "none",
@@ -215,6 +223,8 @@ function drawAngle(preset, rotation) {
       "stroke-linecap": "round",
     }),
   );
+  const labelPoint = point((start + end) / 2, 72);
+  degreeLabel(labelPoint[0], labelPoint[1], preset.degrees);
   const a = point(start, arcRadius),
     b = point(end, arcRadius);
   element("path", {
@@ -245,6 +255,7 @@ function newShape() {
   solved = false;
   svg.replaceChildren();
   const rotation = (Math.random() - 0.5) * 0.9;
+  currentShape = { preset, mode, rotation };
   if (mode === "angle") drawAngle(preset, rotation);
   else drawPolygon(preset, rotation, mode);
   document.getElementById("geometry-instruction").textContent =
@@ -256,6 +267,7 @@ function newShape() {
           ? "זהו את המשולש לפי אורכי הצלעות המסומנים."
           : "זהו את הזווית המסומנת בקשת.";
   document.getElementById("shape-feedback").textContent = "";
+  document.getElementById("shape-feedback").disabled = true;
   const options = document.getElementById("shape-options");
   options.replaceChildren();
   choices.forEach((choice) => {
@@ -271,6 +283,7 @@ function newShape() {
         : "עוד ניסיון! הביטו שוב בציור.";
       if (won) {
         solved = true;
+        document.getElementById("shape-feedback").disabled = false;
         options.querySelectorAll("button").forEach((b) => (b.disabled = true));
       }
     };
@@ -279,3 +292,76 @@ function newShape() {
 }
 document.getElementById("next-shape").onclick = newShape;
 newShape();
+
+// Largest-remainder rounding preserves the polygon's exact angle sum.
+function roundedAngles(points) {
+  const raw = points.map((vertex, i) => {
+    const a = points[(i + points.length - 1) % points.length].map(
+      (v, j) => v - vertex[j],
+    );
+    const b = points[(i + 1) % points.length].map((v, j) => v - vertex[j]);
+    return (
+      (Math.acos(
+        Math.max(
+          -1,
+          Math.min(
+            1,
+            (a[0] * b[0] + a[1] * b[1]) / (Math.hypot(...a) * Math.hypot(...b)),
+          ),
+        ),
+      ) *
+        180) /
+      Math.PI
+    );
+  });
+  const result = raw.map(Math.floor);
+  const remaining =
+    (points.length - 2) * 180 - result.reduce((a, b) => a + b, 0);
+  const order = raw
+    .map((value, index) => ({ index, fraction: value - Math.floor(value) }))
+    .sort((a, b) => b.fraction - a.fraction);
+  for (let i = 0; i < remaining; i++) result[order[i].index]++;
+  return result;
+}
+function degreeLabel(x, y, degrees) {
+  const text = element("text", {
+    x,
+    y,
+    "text-anchor": "middle",
+    "dominant-baseline": "middle",
+    "font-size": 16,
+    "font-family": "Arial",
+    fill: "#8b661f",
+    direction: "ltr",
+  });
+  text.textContent = `${degrees}°`;
+}
+function redrawCurrent() {
+  svg.replaceChildren();
+  if (currentShape.mode === "angle")
+    drawAngle(currentShape.preset, currentShape.rotation);
+  else
+    drawPolygon(currentShape.preset, currentShape.rotation, currentShape.mode);
+}
+let dragPosition = null;
+svg.onpointerdown = (event) => {
+  dragPosition = { x: event.clientX, y: event.clientY, id: event.pointerId };
+  svg.setPointerCapture(event.pointerId);
+};
+svg.onpointermove = (event) => {
+  if (!dragPosition || event.pointerId !== dragPosition.id) return;
+  currentShape.rotation +=
+    (event.clientX - dragPosition.x + (event.clientY - dragPosition.y)) * 0.012;
+  dragPosition.x = event.clientX;
+  dragPosition.y = event.clientY;
+  redrawCurrent();
+};
+svg.onpointerup =
+  svg.onpointercancel =
+  svg.onlostpointercapture =
+    () => {
+      dragPosition = null;
+    };
+document.getElementById("shape-feedback").onclick = () => {
+  if (solved) newShape();
+};
