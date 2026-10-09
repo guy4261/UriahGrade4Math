@@ -964,3 +964,35 @@ dialog .answer-actions {
   text-decoration: underline;
   font-weight: 700;
 }
+
+#open-combined-pdf {
+  float: left;
+  margin-bottom: 16px;
+}
+#combined-pdf-dialog {
+  width: 520px;
+}
+.subject-count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 10px 0;
+}
+.subject-count input {
+  width: 100px;
+  margin: 0;
+  padding: 10px;
+}
+#subject-counts {
+  margin: 18px 0;
+}
+.pdf-worker {
+  position: absolute;
+  width: 1000px;
+  height: 800px;
+  left: -10000px;
+  top: 0;
+  border: 0;
+  visibility: hidden;
+}

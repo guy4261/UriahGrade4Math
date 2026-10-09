@@ -13,6 +13,9 @@
     </header>
     <main>
       <section id="home">
+        <button class="secondary" id="open-combined-pdf" type="button">
+          יצירת PDF מכל המשחקים ↓
+        </button>
         <div class="eyebrow">בואו נשחק עם מספרים</div>
         <h1>קצת משחק.<br />המון תגליות.</h1>
         <p class="intro">מזיזים, מגלים דפוסים ולומדים חשבון בדרך שלכם.</p>
@@ -61,5 +64,25 @@
       </section>
     </main>
     <footer>לכל מי שאוהבים לגלות <span>✦</span></footer>
+    <dialog id="combined-pdf-dialog" aria-labelledby="combined-pdf-title">
+      <form id="combined-pdf-form">
+        <h2 id="combined-pdf-title">דף תרגילים לפי נושאים</h2>
+        <p>
+          בחרו את מספר התרגילים לכל משחק. 0 מדלג על הנושא. לכל נושא מצורפים
+          פתרונות מיד אחרי השאלות שלו.
+        </p>
+        <div id="subject-counts"></div>
+        <div class="answer-actions">
+          <button class="primary" id="combined-generate" type="submit">
+            יצירה והורדה</button
+          ><button class="secondary" id="combined-close" type="button">
+            ביטול
+          </button>
+        </div>
+        <p id="combined-status" role="status" aria-live="polite"></p>
+      </form>
+    </dialog>
+    <script src="vendor/pdf-lib.min.js"></script>
+    <script src="combined-pdf.js"></script>
   </body>
 </html>
