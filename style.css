@@ -799,5 +799,79 @@ dialog .answer-actions {
   }
 }
 
+@media (max-width: 800px) {
+  .compact-game #keypad:not(.operators) {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .compact-game #keypad button {
+    padding: 5px 0;
+    font-size: 16px;
+  }
+}
 
-@media(max-width:800px){.compact-game #keypad:not(.operators){grid-template-columns:repeat(6,minmax(0,1fr))}.compact-game #keypad button{padding:5px 0;font-size:16px}}
+.batch-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+.batch-controls input {
+  width: 90px;
+  padding: 8px;
+}
+.equation-card {
+  background: white;
+  border: 1px solid #dbe3d6;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.equation {
+  direction: ltr;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 24px;
+}
+.equation input {
+  width: 95px;
+  padding: 9px;
+  text-align: center;
+}
+.problem-note {
+  font-size: 13px;
+}
+.equation-card.correct {
+  border-color: #7aa76b;
+  background: #f0f7e9;
+}
+.equation-card.incorrect {
+  border-color: #caa36a;
+}
+#answers-form > .primary {
+  width: auto;
+  min-width: 220px;
+}
+#problems {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 10px;
+}
+@media (max-width: 450px) {
+  #problems {
+    grid-template-columns: 1fr;
+  }
+  .equation {
+    gap: 8px;
+    font-size: 21px;
+  }
+  .equation input {
+    width: 75px;
+  }
+}

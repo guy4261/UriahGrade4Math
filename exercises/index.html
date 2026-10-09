@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>תרגילים | מעבדת החשבון</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="compact-game">
+    <main>
+      <a class="back" href="../">→ לכל המשחקים</a>
+      <div class="game-heading">
+        <h1>תרגילים</h1>
+        <button class="secondary" id="open-pdf">יצירת PDF ↓</button>
+      </div>
+      <p>השלימו את המספר החסר בכל תרגיל. בתרגילי חילוק השארית כבר מוצגת.</p>
+      <form id="batch-form" class="batch-controls">
+        <label for="batch-count">מספר התרגילים</label
+        ><input
+          id="batch-count"
+          type="number"
+          min="1"
+          step="1"
+          value="5"
+          required
+        /><button class="secondary" type="submit">תרגילים חדשים ↻</button>
+      </form>
+      <form id="answers-form">
+        <div id="problems"></div>
+        <button class="primary" type="submit">בדיקת כל התשובות ←</button>
+        <p id="batch-feedback" role="status" aria-live="polite"></p>
+      </form>
+    </main>
+    <dialog id="pdf-dialog" aria-labelledby="pdf-title">
+      <form id="pdf-form">
+        <h2 id="pdf-title">דף תרגילים להדפסה</h2>
+        <p>תרגילים עם מספר חסר, ובסוף דפי פתרונות.</p>
+        <label for="pdf-count">מספר התרגילים</label
+        ><input
+          id="pdf-count"
+          type="number"
+          min="1"
+          step="1"
+          value="20"
+          required
+        />
+        <div class="answer-actions">
+          <button class="primary" id="generate-pdf" type="submit">
+            יצירה והורדה</button
+          ><button class="secondary" id="close-pdf" type="button">ביטול</button>
+        </div>
+        <p id="pdf-status" role="status" aria-live="polite"></p>
+      </form>
+    </dialog>
+    <script src="pdf.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
