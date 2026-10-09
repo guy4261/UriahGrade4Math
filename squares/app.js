@@ -176,6 +176,7 @@ function arrange(animated = false) {
   stopAnimation();
   drag = null;
   const options = [];
+  const smallOptions = [];
   for (let rows = 1; rows <= squares.length; rows++)
     if (squares.length % rows === 0) {
       const columns = squares.length / rows;
@@ -185,15 +186,14 @@ function arrange(animated = false) {
         (height - 90) / rows - 7,
       );
       if (fit >= 16) options.push({ rows, columns, fit });
+      else if (fit > 0) smallOptions.push({ rows, columns, fit });
     }
   const best = options.length
     ? options
     : [
-        {
-          rows: 1,
-          columns: squares.length,
-          fit: Math.min(34, (width - 36) / squares.length - 7),
-        },
+        smallOptions.reduce((best, candidate) =>
+          candidate.fit > best.fit ? candidate : best,
+        ),
       ];
   const layout = best[Math.floor(Math.random() * best.length)];
   size = Math.max(3, layout.fit);

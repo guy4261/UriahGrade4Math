@@ -6,19 +6,13 @@
     <title>מגלים במחסן | מעבדת החשבון</title>
     <link rel="stylesheet" href="../style.css" />
   </head>
-  <body>
-    <header>
-      <a href="../" id="brand">◈ <span>מעבדת החשבון</span></a
-      ><span class="header-note">רעיונות גדולים. תגליות קטנות.</span>
-    </header>
+  <body class="compact-game">
     <main>
       <section id="game">
         <a class="back" id="back" href="../">→ לכל המשחקים</a>
         <div class="game-heading">
           <div>
-            <div class="eyebrow">מגלים במחסן</div>
             <h1>כמה פריטים יש במחסן?</h1>
-            <p id="question"></p>
           </div>
           <div class="round-controls">
             <button class="secondary" id="open-prompt" type="button">
@@ -26,9 +20,12 @@
             </button>
             <button class="secondary" id="open-pdf" type="button">
               יצירת PDF ↓</button
-            ><span id="daily-score" role="status" aria-live="polite"></span
             ><button class="secondary" id="new-round">סיבוב חדש ↻</button>
           </div>
+        </div>
+        <div class="question-row">
+          <p id="question"></p>
+          <span id="daily-score" role="status" aria-live="polite"></span>
         </div>
         <div class="workspace">
           <div class="board-panel">

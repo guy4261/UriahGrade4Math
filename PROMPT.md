@@ -50,3 +50,7 @@ Add a "פרומפט" button on the game page. Clicking it opens an accessible mo
 ## Delivery and verification
 
 Keep the source readable and make it easy to extend the theme list. Verify RTL/mobile layout, direct page loading, dragging, animations, operator precedence, default inputs, daily count deduplication and rollover, prompt loading and copying, and a rendered sample PDF including solutions. Serve locally at http://localhost:8000/ bound to 127.0.0.1. Push the finished app to the GitHub repository guy4261/UriahGrade4Math and enable GitHub Pages from main at the repository root. Verify the published page and assets load and match the local implementation.
+
+## Compact game layout
+
+Omit the large brand/tagline header on the game page. Put Prompt, PDF, and New Round buttons in a horizontal row beside the question title, vertically aligned with it. Keep the daily score beside the question text. Use compact spacing and responsive canvas heights so the question and relevant answer controls are visible immediately without scrolling on typical desktop and mobile screens. On narrow screens put the legend beside the answer form and shrink the canvas while the keypad is open. Keep every container within the canvas even when smaller rectangles require smaller emoji sizes.

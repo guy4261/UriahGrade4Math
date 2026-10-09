@@ -635,3 +635,166 @@ dialog .answer-actions {
 #prompt-dialog .answer-actions {
   flex-wrap: wrap;
 }
+
+/* Keep the exercise and its controls visible together, including on small screens. */
+.compact-game main {
+  padding: 16px 28px;
+  min-height: 0;
+  max-width: 1400px;
+}
+.compact-game .back {
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+.compact-game .game-heading {
+  margin-bottom: 8px;
+  gap: 16px;
+  align-items: center;
+}
+.compact-game .game-heading h1 {
+  font-size: 30px;
+  margin: 0;
+  line-height: 1.25;
+}
+.compact-game .round-controls {
+  flex-direction: row;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.compact-game .round-controls button {
+  padding: 9px 13px;
+  min-height: 38px;
+}
+.question-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.question-row p {
+  margin: 0;
+  color: #36533b;
+  font-size: 17px;
+}
+.question-row #daily-score {
+  white-space: nowrap;
+  font-size: 12px;
+}
+.compact-game .workspace {
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 16px;
+}
+.compact-game canvas {
+  height: clamp(260px, calc(100dvh - 235px), 480px);
+}
+.compact-game .board-heading {
+  padding: 10px 16px;
+}
+.compact-game .board-footer {
+  padding: 10px 16px;
+}
+.compact-game .legend {
+  padding: 12px 16px;
+}
+.compact-game .legend-value {
+  margin: 8px 0;
+  gap: 10px;
+}
+.compact-game .legend-value strong {
+  font-size: 30px;
+}
+.compact-game .object-emoji,
+.compact-game .item-emoji {
+  font-size: 30px;
+}
+.compact-game #answer-form {
+  margin-top: 14px;
+}
+.compact-game form p {
+  margin: 4px 0 8px;
+}
+.compact-game .hint {
+  margin-top: 10px;
+}
+.compact-game #input-help {
+  margin: 6px 0 10px;
+}
+.compact-game #keypad {
+  margin: 8px 0;
+  gap: 4px;
+}
+.compact-game #keypad button {
+  padding: 7px;
+  font-size: 18px;
+}
+.compact-game footer {
+  padding: 8px;
+  font-size: 10px;
+}
+@media (max-width: 800px) {
+  .compact-game main {
+    padding: 12px 16px;
+  }
+  .compact-game .game-heading {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .compact-game .game-heading h1 {
+    font-size: 25px;
+  }
+  .question-row {
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .question-row p {
+    font-size: 15px;
+  }
+  .compact-game .workspace {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .compact-game canvas {
+    height: clamp(180px, 28dvh, 260px);
+  }
+  .compact-game aside {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+  }
+  .compact-game .legend {
+    padding: 10px;
+  }
+  .compact-game .legend-value {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .compact-game .legend p {
+    font-size: 10px;
+  }
+  .compact-game #answer-form {
+    margin-top: 0;
+  }
+  .compact-game .hint {
+    display: none;
+  }
+  .compact-game .round-controls button {
+    padding: 7px 10px;
+    min-height: 34px;
+    font-size: 12px;
+  }
+  .compact-game .formula input {
+    padding: 9px 2px;
+  }
+  .compact-game .primary {
+    padding: 11px;
+  }
+}
+
+@media (max-width: 800px) {
+  .compact-game:has(#keypad:not([hidden])) canvas {
+    height: clamp(100px, 16dvh, 140px);
+  }
+}
