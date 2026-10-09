@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>מרובעים | מעבדת החשבון</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="compact-game" data-geometry="quadrilaterals">
+    <main>
+      <a class="back" href="../">→ לכל המשחקים</a>
+      <div class="game-heading">
+        <h1>מרובעים</h1>
+        <button class="secondary" id="next-shape">ציור חדש ↻</button>
+      </div>
+      <p id="geometry-instruction"></p>
+      <div class="geometry-workspace">
+        <div class="geometry-drawing">
+          <svg
+            id="shape"
+            viewBox="0 0 500 380"
+            role="img"
+            aria-label="ציור לזיהוי"
+          ></svg>
+        </div>
+        <div>
+          <h2>מה מצויר?</h2>
+          <div id="shape-options" class="shape-options"></div>
+          <p id="shape-feedback" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </main>
+    <script src="../geometry.js"></script>
+  </body>
+</html>
