@@ -2,6 +2,7 @@
 const PDF_SUBJECTS = [
   { name: "מגלים במחסן", path: "squares/", generator: "generateWorksheet" },
   { name: "תרגילים", path: "exercises/", generator: "exercisePdf" },
+  { name: "סדרות מספרים", path: "sequences/", generator: "sequencePdf" },
   { name: "מרובעים", path: "quadrilaterals/", generator: "geometryWorksheet" },
   { name: "משולשים", path: "triangles/", generator: "geometryWorksheet" },
   { name: "זוויות", path: "angles/", generator: "geometryWorksheet" },

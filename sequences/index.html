@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>סדרות מספרים | מעבדת החשבון</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="compact-game">
+    <main>
+      <a class="back" href="../">→ לכל המשחקים</a>
+      <div class="game-heading">
+        <h1>סדרות מספרים</h1>
+        <div class="round-controls">
+          <button class="secondary" id="open-pdf" type="button">יצירת PDF ↓</button>
+          <button class="secondary" id="new-sequence" type="button">סדרה חדשה ↻</button>
+        </div>
+      </div>
+      <p>המספרים בסדרה גדלים בכל פעם באותו מרחק. איזה מספר יופיע בהמשך הסדרה? הוא לא חייב להיות המספר הבא.</p>
+      <section class="sequence-panel" aria-label="סדרת המספרים">
+        <p id="sequence" dir="ltr"></p>
+        <div id="sequence-options" class="shape-options" dir="ltr" role="group" aria-label="בחרו מספר"></div>
+        <div id="sequence-feedback" role="status" aria-live="polite"></div>
+      </section>
+    </main>
+    <dialog id="pdf-dialog" aria-labelledby="pdf-title">
+      <form id="pdf-form">
+        <h2 id="pdf-title">סדרות מספרים להדפסה</h2>
+        <p>בחרו מספר בכל סדרה. בסוף מופיעים פתרונות עם דרך החישוב.</p>
+        <label for="pdf-count">מספר התרגילים</label>
+        <input id="pdf-count" type="number" min="1" step="1" value="12" required />
+        <div class="answer-actions">
+          <button class="primary" id="generate-pdf" type="submit">יצירה והורדה</button>
+          <button class="secondary" id="close-pdf" type="button">ביטול</button>
+        </div>
+        <p id="pdf-status" role="status" aria-live="polite"></p>
+      </form>
+    </dialog>
+    <script src="../exercises/pdf.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

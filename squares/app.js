@@ -66,7 +66,9 @@ function calculate() {
       throw new Error("הקלידו מספרים שלמים קטנים מספיק לחישוב.");
     return Number(v);
   });
-  const ops = [values[1], values[3]].map((op) => (op === "x" ? "*" : op));
+  const ops = [values[1], values[3]].map((op) =>
+    op === "x" ? "*" : op === ":" ? "/" : op,
+  );
   if (ops.some((op) => !["+", "-", "*", "/"].includes(op)))
     throw new Error("בחרו פעולת חשבון בכל אחד משני הרווחים.");
   const terms = [numbers[0]],
@@ -111,7 +113,7 @@ function showKeypad(field) {
   pad.classList.toggle("operators", operator);
   pad.replaceChildren();
   const keys = operator
-    ? ["+", "-", "x", "/"]
+    ? ["+", "-", "x", ":"]
     : ["1", "2", "3", "4", "5", "6", "7", "8", "9", "ניקוי", "0", "⌫"];
   for (const key of keys) {
     const button = document.createElement("button");
@@ -143,10 +145,12 @@ fields.forEach((field) => {
     }
     if (
       field.classList.contains("operator-field") &&
-      ["+", "-", "x", "X", "*", "/"].includes(event.key)
+      ["+", "-", "x", "X", "*", ":", "/"].includes(event.key)
     ) {
       event.preventDefault();
-      field.value = ["*", "X"].includes(event.key) ? "x" : event.key;
+      field.value = ["*", "X"].includes(event.key)
+        ? "x"
+        : event.key === "/" ? ":" : event.key;
       clearFeedback();
     }
   };

@@ -72,7 +72,9 @@ function renderProblems(count) {
     values.forEach((value, position) => {
       if (position > 0) {
         const symbol = document.createElement("span");
-        symbol.textContent = position === 1 ? problem.operator : "=";
+        symbol.textContent = position === 1
+          ? (problem.operator === "/" ? ":" : problem.operator)
+          : "=";
         equation.append(symbol);
       }
       if (position === problem.missing) {
@@ -154,7 +156,8 @@ function printableEquation(problem, solution = false) {
         ? `${value}(${problem.remainder})`
         : value,
   );
-  return `${values[0]} ${problem.operator} ${values[1]} = ${values[2]}`;
+  const symbol = problem.operator === "/" ? ":" : problem.operator;
+  return `${values[0]} ${symbol} ${values[1]} = ${values[2]}`;
 }
 
 async function exercisePdf(count) {
