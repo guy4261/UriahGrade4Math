@@ -12,6 +12,7 @@
       <div class="game-heading">
         <h1>מרובעים</h1>
         <div class="round-controls">
+          <button class="secondary" id="open-shape-help" type="button" aria-label="הגדרות ויחסים בין המרובעים" aria-haspopup="dialog">?</button>
           <button class="secondary" id="open-pdf">יצירת PDF ↓</button
           ><button class="secondary" id="next-shape">ציור חדש ↻</button>
         </div>
@@ -60,6 +61,40 @@
         <p id="geometry-pdf-status" role="status"></p>
       </form>
     </dialog>
+    <dialog id="shape-help-dialog" aria-labelledby="shape-help-title">
+      <form method="dialog">
+        <button class="secondary shape-help-close" aria-label="סגירת ההסבר" autofocus>סגירה ×</button>
+        <h2 id="shape-help-title">משפחת המרובעים</h2>
+        <p>מרובע הוא מצולע בעל ארבע צלעות. לכל צורה יכולים להתאים כמה שמות!</p>
+        <h3>מה ההגדרה של כל צורה?</h3>
+        <dl class="shape-definitions">
+          <dt>ריבוע</dt><dd>מרובע שכל ארבע צלעותיו שוות וכל ארבע זוויותיו ישרות (90°).</dd>
+          <dt>מלבן</dt><dd>מרובע שכל ארבע זוויותיו ישרות.</dd>
+          <dt>מקבילית</dt><dd>מרובע שבו שני זוגות הצלעות הנגדיות מקבילים.</dd>
+          <dt>מעוין</dt><dd>מרובע שכל ארבע צלעותיו שוות.</dd>
+          <dt>טרפז</dt><dd>כאן נשתמש בהגדרה: מרובע שבו בדיוק זוג אחד של צלעות נגדיות מקבילות.</dd>
+          <dt>דלתון</dt><dd>מרובע שבו שני זוגות נפרדים של צלעות סמוכות שוות. בהגדרה זו גם מעוין וריבוע הם דלתונים.</dd>
+        </dl>
+        <h3>מי שייך לאיזו משפחה?</h3>
+        <ul>
+          <li>כל ריבוע הוא גם מלבן וגם מעוין, ולכן גם מקבילית וגם דלתון.</li>
+          <li>כל מלבן הוא מקבילית, אבל לא כל מקבילית היא מלבן.</li>
+          <li>כל מעוין הוא מקבילית וגם דלתון, אבל לא כל מקבילית או דלתון הם מעוינים.</li>
+          <li>לפי הגדרת הטרפז כאן, מקבילית אינה טרפז, ולכן גם מלבן, מעוין וריבוע אינם טרפזים.</li>
+        </ul>
+        <h3>מתי צורה מקבלת שם נוסף?</h3>
+        <ul>
+          <li><strong>מלבן הוא ריבוע</strong> כאשר שתי צלעות סמוכות שלו שוות — כלומר, האורך שווה לרוחב.</li>
+          <li><strong>מעוין הוא ריבוע</strong> כאשר יש בו זווית ישרה אחת (ואז כל זוויותיו ישרות).</li>
+          <li><strong>מקבילית היא מלבן</strong> כאשר יש בה זווית ישרה אחת.</li>
+          <li><strong>מקבילית היא מעוין</strong> כאשר שתי צלעות סמוכות שלה שוות.</li>
+          <li><strong>דלתון הוא מעוין</strong> כאשר כל ארבע צלעותיו שוות; אם גם זוויותיו ישרות, הוא ריבוע.</li>
+        </ul>
+        <p class="shape-help-note">יש ספרים שמגדירים טרפז כבעל לפחות זוג אחד של צלעות מקבילות — ואז גם מקבילית היא טרפז. יש גם ספרים שמוציאים מעוינים מהגדרת הדלתון. כדאי לבדוק באיזו הגדרה משתמשים בכיתה.</p>
+        <p><strong>במשחק בוחרים את השם המדויק ביותר:</strong> לריבוע בוחרים „ריבוע”, אף שגם „מלבן” ו„מעוין” מתארים אותו נכון. סיבוב הציור אינו משנה את סוג המרובע.</p>
+      </form>
+    </dialog>
+    <script src="help.js"></script>
     <script src="../exercises/pdf.js"></script>
     <script src="../geometry.js"></script>
     <script src="../geometry-pdf.js"></script>

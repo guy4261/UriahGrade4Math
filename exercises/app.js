@@ -160,13 +160,20 @@ function printableEquation(problem, solution = false) {
   return `${values[0]} ${symbol} ${values[1]} = ${values[2]}`;
 }
 
-async function exercisePdf(count) {
+async function exercisePdf(count, options = {}) {
+  const pageOptions = {
+    ...options,
+    questionPages: Math.ceil(count / 16),
+    totalPages: options.totalPages ?? Math.ceil(count / 16) + Math.ceil(count / 16),
+    generatedOn: options.generatedOn || new Date().toISOString(),
+  };
+  const makePage = (title, number) => worksheetPage(title, number, pageOptions);
   await document.fonts.ready;
   const exercises = Array.from({ length: count }, createProblem),
     images = [];
   for (const solutions of [false, true]) {
     for (let start = 0; start < count; start += 16) {
-      const { canvas, context } = worksheetPage(
+      const { canvas, context } = makePage(
         solutions ? "תרגילים - פתרונות" : "השלימו את המספר החסר",
         images.length + 1,
       );

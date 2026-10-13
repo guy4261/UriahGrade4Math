@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>בעיות מילוליות | מעבדת החשבון</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="compact-game">
+    <main>
+      <a class="back" href="../">→ לכל המשחקים</a>
+      <div class="game-heading">
+        <h1>בעיות מילוליות</h1>
+        <div class="round-controls">
+          <button class="secondary" id="open-pdf" type="button">יצירת PDF ↓</button>
+          <button class="secondary" id="new-problem" type="button">שאלה חדשה ↻</button>
+        </div>
+      </div>
+      <p>מתרגלים קנייה ועודף, וסידור פריטים במכלים. אם נשארים פריטים, צריך מכל נוסף.</p>
+      <div class="batch-controls">
+        <label for="problem-type">סוג השאלות</label>
+        <select id="problem-type">
+          <option value="mixed">כל הסוגים</option>
+          <option value="shopping">קנייה ועודף</option>
+          <option value="packing">סידור במכלים</option>
+        </select>
+      </div>
+      <section class="sequence-panel word-problem-panel" aria-label="בעיה מילולית">
+        <p id="word-problem"></p>
+        <form id="answer-form">
+          <label id="answer-label" for="answer">כמה שקלים יישארו?</label>
+          <input id="answer" type="number" min="0" max="200" step="1" inputmode="numeric" required />
+          <button class="primary" type="submit">בדיקת התשובה</button>
+        </form>
+        <div id="word-feedback" role="status" aria-live="polite"></div>
+      </section>
+    </main>
+    <dialog id="pdf-dialog" aria-labelledby="pdf-title">
+      <form id="pdf-form">
+        <h2 id="pdf-title">בעיות מילוליות להדפסה</h2>
+        <p>שאלות מהסוג שנבחר בעמוד, ואחריהן פתרונות עם דרך החישוב.</p>
+        <label for="pdf-count">מספר התרגילים</label>
+        <input id="pdf-count" type="number" min="1" step="1" value="12" required />
+        <div class="answer-actions">
+          <button class="primary" id="generate-pdf" type="submit">יצירה והורדה</button>
+          <button class="secondary" id="close-pdf" type="button">ביטול</button>
+        </div>
+        <p id="pdf-status" role="status" aria-live="polite"></p>
+      </form>
+    </dialog>
+    <script src="../exercises/pdf.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

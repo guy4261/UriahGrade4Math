@@ -6,7 +6,7 @@
     <title>מעבדת החשבון</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
+  <body class="home-page">
     <header>
       <a href="./" id="brand">◈ <span>מעבדת החשבון</span></a
       ><span class="header-note">רעיונות גדולים. תגליות קטנות.</span>
@@ -17,8 +17,9 @@
           יצירת PDF מכל המשחקים ↓
         </button>
         <div class="eyebrow">בואו נשחק עם מספרים</div>
-        <h1>קצת משחק.<br />המון תגליות.</h1>
+        <h1>קצת משחק. המון תגליות.</h1>
         <p class="intro">מזיזים, מגלים דפוסים ולומדים חשבון בדרך שלכם.</p>
+        <div class="games-grid">
         <a class="game-card" id="start" href="squares/"
           ><span class="card-art warehouse-art" aria-hidden="true"
             ><i>📦</i><i>📦</i><i>📦</i><i>📦</i><i>📦</i><i>📦</i></span
@@ -37,6 +38,22 @@
             ><span class="card-link">בואו נתרגל <b>↖</b></span></span
           ></a
         >
+        <a class="game-card" href="cards/">
+          <span class="card-art geometry-card-art" aria-hidden="true">🃏 1234</span>
+          <span class="card-content"><span class="tag">ספרות וערך המקום</span>
+            <strong>משחק הקלפים</strong>
+            <span>צרו את המספר הגדול והקטן ביותר עם ספרה במקום קבוע.</span>
+            <span class="card-link">בואו נשחק <b>↖</b></span>
+          </span>
+        </a>
+        <a class="game-card" href="word-problems/">
+          <span class="card-art geometry-card-art" aria-hidden="true">🛍️ 💵</span>
+          <span class="card-content"><span class="tag">כפל וחיסור</span>
+            <strong>בעיות מילוליות</strong>
+            <span>פתרו שאלות על קנייה ועודף ועל סידור פריטים במכלים.</span>
+            <span class="card-link">בואו נפתור <b>↖</b></span>
+          </span>
+        </a>
         <a class="game-card" href="sequences/"
           ><span class="card-art warehouse-art" aria-hidden="true">1, 4, 7…</span
           ><span class="card-content"
@@ -46,7 +63,12 @@
           ></a
         >
         <a class="game-card" href="quadrilaterals/"
-          ><span class="card-art warehouse-art" aria-hidden="true">▱</span
+          ><span class="card-art geometry-card-art" aria-hidden="true">
+            <svg viewBox="0 0 200 160" fill="none">
+              <rect x="30" y="36" width="140" height="88" rx="5" fill="#edf3e4" stroke="#315c45" stroke-width="5" />
+              <path d="M100 28v16 M100 116v16 M22 72h16 M22 84h16 M162 72h16 M162 84h16" stroke="#315c45" stroke-width="4" stroke-linecap="round" />
+              <path d="M44 36v14h-14 M156 124v-14h14" stroke="#b38632" stroke-width="3" />
+            </svg></span
           ><span class="card-content"
             ><span class="tag">מגלים צורות</span><strong>מרובעים</strong
             ><span>הביטו בציור ובחרו את התשובה המתאימה.</span
@@ -54,7 +76,12 @@
           ></a
         >
         <a class="game-card" href="triangles/"
-          ><span class="card-art warehouse-art" aria-hidden="true">△</span
+          ><span class="card-art geometry-card-art" aria-hidden="true">
+            <svg viewBox="0 0 200 160" fill="none">
+              <path d="M100 24 170 130H30Z" fill="#edf3e4" stroke="#315c45" stroke-width="5" stroke-linejoin="round" />
+              <path d="m58 72 14 9 m56 0 14-9" stroke="#315c45" stroke-width="4" stroke-linecap="round" />
+              <path d="M44 130a22 22 0 0 0-7-12 M156 130a22 22 0 0 1 7-12" stroke="#b38632" stroke-width="3" />
+            </svg></span
           ><span class="card-content"
             ><span class="tag">מגלים צורות</span><strong>משולשים</strong
             ><span>הביטו בציור ובחרו את התשובה המתאימה.</span
@@ -62,13 +89,20 @@
           ></a
         >
         <a class="game-card" href="angles/"
-          ><span class="card-art warehouse-art" aria-hidden="true">∠</span
+          ><span class="card-art geometry-card-art" aria-hidden="true">
+            <svg viewBox="0 0 200 160" fill="none">
+              <path d="M36 126H170L131 31Z" fill="#edf3e4" />
+              <path d="M80 126a44 44 0 0 0-13-31" stroke="#b38632" stroke-width="4" stroke-linecap="round" />
+              <path d="m131 31-95 95h134" stroke="#315c45" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="36" cy="126" r="5" fill="#315c45" />
+            </svg></span
           ><span class="card-content"
             ><span class="tag">מגלים צורות</span><strong>זוויות</strong
             ><span>הביטו בציור ובחרו את התשובה המתאימה.</span
             ><span class="card-link">בואו נגלה <b>↖</b></span></span
           ></a
         >
+        </div>
       </section>
     </main>
     <footer>לכל מי שאוהבים לגלות <span>✦</span></footer>
@@ -76,8 +110,8 @@
       <form id="combined-pdf-form">
         <h2 id="combined-pdf-title">דף תרגילים לפי נושאים</h2>
         <p>
-          בחרו את מספר התרגילים לכל משחק. 0 מדלג על הנושא. לכל נושא מצורפים
-          פתרונות מיד אחרי השאלות שלו.
+          בחרו את מספר התרגילים לכל משחק. 0 מדלג על הנושא.
+          כל השאלות מופיעות תחילה, ואחריהן כל הפתרונות.
         </p>
         <div id="subject-counts"></div>
         <div class="answer-actions">

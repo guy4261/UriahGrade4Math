@@ -1,4 +1,9 @@
-function worksheetPage(title, pageNumber) {
+function worksheetPage(title, pageNumber, options = {}) {
+  const isQuestion = pageNumber <= options.questionPages;
+  const printedNumber = isQuestion
+    ? (options.questionOffset || 0) + pageNumber
+    : (options.answerOffset ?? options.questionPages ?? 0) + pageNumber - (options.questionPages || 0);
+  const answerPage = (options.answerOffset ?? options.questionPages ?? 0) + 1;
   const canvas = document.createElement("canvas");
   canvas.width = 1240;
   canvas.height = 1754;
@@ -10,15 +15,22 @@ function worksheetPage(title, pageNumber) {
   context.textAlign = "right";
   context.font = "bold 40px Heebo, Arial, sans-serif";
   context.fillText(title, 1150, 100);
+  context.font = "22px Heebo, Arial, sans-serif";
+  if (isQuestion) context.fillText(`פתרונות בעמוד ${answerPage}`, 1150, 138);
   context.font = "24px Heebo, Arial, sans-serif";
-  context.fillText("מעבדת החשבון · מגלים במחסן", 1150, 145);
+  context.fillText("מעבדת החשבון · מגלים במחסן", 1150, 165);
   context.strokeStyle = "#cedbc4";
   context.beginPath();
-  context.moveTo(90, 175);
-  context.lineTo(1150, 175);
+  context.moveTo(90, 190);
+  context.lineTo(1150, 190);
   context.stroke();
   context.textAlign = "center";
-  context.fillText(`עמוד ${pageNumber}`, 620, 1695);
+  context.direction = "ltr";
+  context.fillText(`${printedNumber}/${options.totalPages}`, 620, 1695);
+  context.direction = "ltr";
+  context.font = "18px Arial, sans-serif";
+  context.fillText(`Generated on ${options.generatedOn || new Date().toISOString()} · https://t.ly/wm4`, 620, 1730);
+  context.direction = "rtl";
   context.textAlign = "right";
   return { canvas, context };
 }

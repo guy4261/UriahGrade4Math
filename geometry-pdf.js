@@ -58,7 +58,14 @@ async function shapeImage(exercise) {
     URL.revokeObjectURL(url);
   }
 }
-async function geometryWorksheet(count) {
+async function geometryWorksheet(count, options = {}) {
+  const pageOptions = {
+    ...options,
+    questionPages: Math.ceil(count / 4),
+    totalPages: options.totalPages ?? Math.ceil(count / 4) + Math.ceil(count / 20),
+    generatedOn: options.generatedOn || new Date().toISOString(),
+  };
+  const makePage = (title, number) => worksheetPage(title, number, pageOptions);
   await document.fonts.ready;
   const exercises = Array.from({ length: count }, geometryExercise),
     images = [];
@@ -79,7 +86,7 @@ async function geometryWorksheet(count) {
   // Four cards in a two-column grid: keep degree labels and all choices legible.
   const problemsPerPage = 4;
   for (let start = 0; start < count; start += problemsPerPage) {
-    const { canvas, context } = worksheetPage(
+    const { canvas, context } = makePage(
       `${titles[document.body.dataset.geometry]} - דף תרגילים`,
       images.length + 1,
     );
@@ -126,7 +133,7 @@ async function geometryWorksheet(count) {
     await addPage(canvas);
   }
   for (let start = 0; start < count; start += 20) {
-    const { canvas, context } = worksheetPage(
+    const { canvas, context } = makePage(
       `${titles[document.body.dataset.geometry]} - פתרונות`,
       images.length + 1,
     );

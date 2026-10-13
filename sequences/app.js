@@ -67,13 +67,20 @@ function newSequence() {
   });
 }
 
-async function sequencePdf(count) {
+async function sequencePdf(count, options = {}) {
+  const pageOptions = {
+    ...options,
+    questionPages: Math.ceil(count / 8),
+    totalPages: options.totalPages ?? Math.ceil(count / 8) + Math.ceil(count / 8),
+    generatedOn: options.generatedOn || new Date().toISOString(),
+  };
+  const makePage = (title, number) => worksheetPage(title, number, pageOptions);
   await document.fonts.ready;
   const problems = Array.from({ length: count }, createSequenceProblem);
   const images = [];
   for (const solutions of [false, true]) {
     for (let start = 0; start < count; start += 8) {
-      const { canvas, context } = worksheetPage(
+      const { canvas, context } = makePage(
         solutions ? "סדרות מספרים - פתרונות" : "איזה מספר יופיע בהמשך הסדרה?",
         images.length + 1,
       );

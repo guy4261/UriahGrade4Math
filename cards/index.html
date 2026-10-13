@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>משחק הקלפים | מעבדת החשבון</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="compact-game">
+    <main>
+      <a class="back" href="../">→ לכל המשחקים</a>
+      <div class="game-heading">
+        <h1>משחק הקלפים</h1>
+        <div class="round-controls">
+          <button class="secondary" id="open-pdf" type="button">יצירת PDF ↓</button>
+          <button class="secondary" id="new-problem" type="button">שאלה חדשה ↻</button>
+        </div>
+      </div>
+      <p>משתמשים בכל קלף פעם אחת, שומרים על מקום הספרה הקבועה, ובונים מספרים בני ארבע ספרות. מספר לא יכול להתחיל באפס.</p>
+      <section class="sequence-panel word-problem-panel" aria-label="שאלת קלפים">
+        <p id="card-intro"></p>
+        <div id="digit-cards" dir="ltr" aria-label="הספרות שעל הקלפים"></div>
+        <p id="card-rule"></p>
+        <form id="answer-form">
+          <label id="largest-label" for="largest"></label>
+          <input id="largest" type="number" min="1000" max="9999" step="1" inputmode="numeric" required />
+          <p id="largest-feedback" role="status" aria-live="polite"></p>
+          <label id="smallest-label" for="smallest"></label>
+          <input id="smallest" type="number" min="1000" max="9999" step="1" inputmode="numeric" required />
+          <p id="smallest-feedback" role="status" aria-live="polite"></p>
+          <button class="primary" type="submit">בדיקת התשובות</button>
+        </form>
+        <p id="card-feedback" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+    <dialog id="pdf-dialog" aria-labelledby="pdf-title">
+      <form id="pdf-form">
+        <h2 id="pdf-title">משחק הקלפים להדפסה</h2>
+        <p>שאלות ואחריהן פתרונות. בכל שאלה הספרה הקבועה נשארת במקומה.</p>
+        <label for="pdf-count">מספר התרגילים</label>
+        <input id="pdf-count" type="number" min="1" step="1" value="12" required />
+        <div class="answer-actions">
+          <button class="primary" id="generate-pdf" type="submit">יצירה והורדה</button>
+          <button class="secondary" id="close-pdf" type="button">ביטול</button>
+        </div>
+        <p id="pdf-status" role="status" aria-live="polite"></p>
+      </form>
+    </dialog>
+    <script src="../exercises/pdf.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

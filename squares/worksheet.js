@@ -15,7 +15,12 @@ function makeExercise() {
   };
 }
 
-function worksheetPage(title, pageNumber) {
+function worksheetPage(title, pageNumber, options = {}) {
+  const isQuestion = pageNumber <= options.questionPages;
+  const printedNumber = isQuestion
+    ? (options.questionOffset || 0) + pageNumber
+    : (options.answerOffset ?? options.questionPages ?? 0) + pageNumber - (options.questionPages || 0);
+  const answerPage = (options.answerOffset ?? options.questionPages ?? 0) + 1;
   const canvas = document.createElement("canvas");
   canvas.width = 1240;
   canvas.height = 1754;
@@ -27,15 +32,22 @@ function worksheetPage(title, pageNumber) {
   context.textAlign = "right";
   context.font = "bold 40px Heebo, Arial, sans-serif";
   context.fillText(title, 1150, 100);
+  context.font = "22px Heebo, Arial, sans-serif";
+  if (isQuestion) context.fillText(`פתרונות בעמוד ${answerPage}`, 1150, 138);
   context.font = "24px Heebo, Arial, sans-serif";
-  context.fillText("מעבדת החשבון · מגלים במחסן", 1150, 145);
+  context.fillText("מעבדת החשבון · מגלים במחסן", 1150, 165);
   context.strokeStyle = "#cedbc4";
   context.beginPath();
-  context.moveTo(90, 175);
-  context.lineTo(1150, 175);
+  context.moveTo(90, 190);
+  context.lineTo(1150, 190);
   context.stroke();
   context.textAlign = "center";
-  context.fillText(`עמוד ${pageNumber}`, 620, 1695);
+  context.direction = "ltr";
+  context.fillText(`${printedNumber}/${options.totalPages}`, 620, 1695);
+  context.direction = "ltr";
+  context.font = "18px Arial, sans-serif";
+  context.fillText(`Generated on ${options.generatedOn || new Date().toISOString()} · https://t.ly/wm4`, 620, 1730);
+  context.direction = "rtl";
   context.textAlign = "right";
   return { canvas, context };
 }
@@ -143,7 +155,14 @@ function encodePdf(images) {
   return new Blob(chunks, { type: "application/pdf" });
 }
 
-async function generateWorksheet(count) {
+async function generateWorksheet(count, options = {}) {
+  const pageOptions = {
+    ...options,
+    questionPages: Math.ceil(count / 2),
+    totalPages: options.totalPages ?? Math.ceil(count / 2) + Math.ceil(count / 18),
+    generatedOn: options.generatedOn || new Date().toISOString(),
+  };
+  const makePage = (title, number) => worksheetPage(title, number, pageOptions);
   await document.fonts.ready;
   const exercises = Array.from({ length: count }, makeExercise);
   const images = [];
@@ -157,14 +176,14 @@ async function generateWorksheet(count) {
     await new Promise((resolve) => setTimeout(resolve, 0));
   };
   for (let i = 0; i < exercises.length; i += 2) {
-    const { canvas, context } = worksheetPage("דף תרגילים", images.length + 1);
+    const { canvas, context } = makePage("דף תרגילים", images.length + 1);
     drawExercise(context, exercises[i], i, 225);
     if (exercises[i + 1]) drawExercise(context, exercises[i + 1], i + 1, 945);
     await addPage(canvas);
   }
   // Solutions always start on a new page, with up to 18 answers per page.
   for (let i = 0; i < exercises.length; i += 18) {
-    const { canvas, context } = worksheetPage("פתרונות", images.length + 1);
+    const { canvas, context } = makePage("פתרונות", images.length + 1);
     exercises.slice(i, i + 18).forEach((exercise, offset) => {
       const { rows, columns, items, theme } = exercise;
       const total = rows * columns * items;

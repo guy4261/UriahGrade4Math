@@ -1,5 +1,7 @@
-// Reuse each game's own generator, preserving its questions-then-solutions order.
+// Reuse each generator, then collect all questions before all answers.
 const PDF_SUBJECTS = [
+  { name: "משחק הקלפים", path: "cards/", generator: "cardsPdf" },
+  { name: "בעיות מילוליות", path: "word-problems/", generator: "wordProblemsPdf" },
   { name: "מגלים במחסן", path: "squares/", generator: "generateWorksheet" },
   { name: "תרגילים", path: "exercises/", generator: "exercisePdf" },
   { name: "סדרות מספרים", path: "sequences/", generator: "sequencePdf" },
@@ -33,7 +35,7 @@ document.getElementById("open-combined-pdf").onclick = () =>
 document.getElementById("combined-close").onclick = () =>
   combinedDialog.close();
 
-async function subjectPdf(subject, count) {
+async function subjectPdf(subject, count, options) {
   const frame = document.createElement("iframe");
   frame.className = "pdf-worker";
   frame.tabIndex = -1;
@@ -58,7 +60,7 @@ async function subjectPdf(subject, count) {
     const generate = frame.contentWindow[subject.generator];
     if (typeof generate !== "function")
       throw new Error(`יצירת PDF עבור ${subject.name} אינה זמינה.`);
-    const blob = await generate(count);
+    const blob = await generate(count, options);
     // Copy bytes before destroying the iframe: its pending Blob operations need a live document.
     return await blob.arrayBuffer();
   } finally {
@@ -69,13 +71,41 @@ async function subjectPdf(subject, count) {
 async function combinedWorksheet(selection) {
   const documentPdf = await PDFLib.PDFDocument.create();
   documentPdf.setTitle("מעבדת החשבון - תרגילים לפי נושאים");
-  for (const { subject, count } of selection) {
+  const sizes = [4, 6, 2, 16, 8, 4, 4, 4];
+  const answerSizes = [4, 6, 18, 16, 8, 20, 20, 20];
+  const sections = selection.map(({ subject, count }) => ({
+    subject, count,
+    questionPages: Math.ceil(count / sizes[PDF_SUBJECTS.indexOf(subject)]),
+    answerPages: Math.ceil(count / answerSizes[PDF_SUBJECTS.indexOf(subject)]),
+  }));
+  const totalQuestions = sections.reduce((total, section) => total + section.questionPages, 0);
+  const totalPages = sections.reduce((total, section) => total + section.questionPages + section.answerPages, 0);
+  const generatedOn = new Date().toISOString();
+  let questionOffset = 0, answerOffset = totalQuestions;
+  const questionPages = [], answerPages = [];
+  for (const { subject, count, questionPages: questionCount } of sections) {
     combinedStatus.textContent = `מכינים ${subject.name}: ${count} תרגילים…`;
-    const bytes = await subjectPdf(subject, count);
+    const bytes = await subjectPdf(subject, count, { questionOffset, answerOffset, generatedOn, totalPages });
     const source = await PDFLib.PDFDocument.load(new Uint8Array(bytes));
     const pages = await documentPdf.copyPages(source, source.getPageIndices());
-    pages.forEach((page) => documentPdf.addPage(page));
+    questionPages.push(...pages.slice(0, questionCount));
+    answerPages.push(...pages.slice(questionCount));
+    questionOffset += questionCount;
+    answerOffset += pages.length - questionCount;
   }
+  const orderedPages = [...questionPages, ...answerPages];
+  const footerFont = await documentPdf.embedFont(PDFLib.StandardFonts.Helvetica);
+  orderedPages.forEach((page, index) => {
+    documentPdf.addPage(page);
+    // Stamp only after final ordering, using the actual final document length.
+    const { width } = page.getSize();
+    page.drawRectangle({ x: 0, y: 0, width, height: 39, color: PDFLib.rgb(1, 1, 1) });
+    const number = `${index + 1}/${orderedPages.length}`;
+    const footer = `Generated on ${generatedOn} | https://t.ly/wm4`;
+    for (const [text, size, y] of [[number, 11, 25], [footer, 9, 9]]) {
+      page.drawText(text, { x: (width - footerFont.widthOfTextAtSize(text, size)) / 2, y, size, font: footerFont, color: PDFLib.rgb(0.13, 0.24, 0.21) });
+    }
+  });
   return new Blob([await documentPdf.save()], { type: "application/pdf" });
 }
 
@@ -104,7 +134,7 @@ document.getElementById("combined-pdf-form").onsubmit = async (event) => {
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 60000);
     combinedStatus.textContent =
-      "הקובץ מוכן! לכל נושא שאלות ואחריהן פתרונות. ההורדה התחילה.";
+      "הקובץ מוכן! כל השאלות ואחריהן כל הפתרונות. ההורדה התחילה.";
   } catch (error) {
     combinedStatus.textContent = error.message || "יצירת הקובץ נכשלה. נסו שוב.";
   } finally {

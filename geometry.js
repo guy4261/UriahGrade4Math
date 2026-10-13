@@ -144,6 +144,7 @@ function drawPolygon(preset, rotation, mode) {
     "stroke-width": 4,
     "stroke-linejoin": "round",
   });
+  drawEqualSideMarks(points, preset.lengths);
   if (mode === "angles" || mode === "polygon") {
     const degrees = roundedAngles(preset.points);
     points.forEach((vertex, i) => {
@@ -201,6 +202,39 @@ function drawPolygon(preset, rotation, mode) {
       label.textContent = preset.lengths[i];
     });
   }
+}
+function drawEqualSideMarks(points, lengths) {
+  const edgeLengths = lengths || points.map((point, i) => {
+    const next = points[(i + 1) % points.length];
+    return Math.hypot(next[0] - point[0], next[1] - point[1]);
+  });
+  const groups = [];
+  edgeLengths.forEach((length, i) => {
+    const group = groups.find((entry) => Math.abs(entry.length - length) < 0.000001);
+    if (group) group.edges.push(i);
+    else groups.push({ length, edges: [i] });
+  });
+  const equalGroups = groups.filter((group) => group.edges.length > 1);
+  equalGroups.forEach((group, groupIndex) => {
+    const count = group.edges.length === points.length ? 2 : groupIndex + 1;
+    group.edges.forEach((i) => {
+      const point = points[i], next = points[(i + 1) % points.length];
+      const length = Math.hypot(next[0] - point[0], next[1] - point[1]);
+      const tangent = [(next[0] - point[0]) / length, (next[1] - point[1]) / length];
+      const normal = [-tangent[1], tangent[0]];
+      for (let mark = 0; mark < count; mark++) {
+        const offset = (mark - (count - 1) / 2) * 8;
+        const mid = [(point[0] + next[0]) / 2 + tangent[0] * offset,
+          (point[1] + next[1]) / 2 + tangent[1] * offset];
+        element("line", {
+          x1: mid[0] - normal[0] * 8, y1: mid[1] - normal[1] * 8,
+          x2: mid[0] + normal[0] * 8, y2: mid[1] + normal[1] * 8,
+          stroke: "#315c45", "stroke-width": 3, "stroke-linecap": "round",
+          "data-side-mark": i,
+        });
+      }
+    });
+  });
 }
 function drawAngle(preset, rotation) {
   const origin = [250, 215],
