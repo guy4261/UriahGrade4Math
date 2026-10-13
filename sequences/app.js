@@ -35,7 +35,7 @@ function sequenceText(problem) {
 }
 
 function sequenceAnswer(problem) {
-  return `${problem.start} + ${problem.steps} * ${problem.distance} = ${problem.answer}`;
+  return `${problem.start} + (${problem.steps} x ${problem.distance}) = ${problem.answer}`;
 }
 
 function newSequence() {
